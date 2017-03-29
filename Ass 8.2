@@ -1,0 +1,54 @@
+Explain the core changes made in Hadoop 2.x ?
+ 
+ANS : 
+    *  In hadoop 2.x,resource Utilization is taken care by ResourceManager and NodeManager, whereas job monitoring is taken care by Application Master
+       In hadoop 1.x jobTracker keeps track of resource utilization and job monitoring.
+    *  It can scale up to 10000 nodes and 100000 tasks and hadoop 1.x can scale upto 4000 nodes and 40000 tasks
+    *  In hadoop 2.x,taskTracker is configured with static slots. Moreover, a map tasks cannot run on reduce slot. 
+       So cluster utilization is low.In hadoop 1.x,resources are dynamic and fine grained.This leads to better cluster utilization.
+    *  It Supports processing models other than Map Reduce whereas hadoop 1.x supports only MapReduce processing model.
+    *  It works on the concept of containers.
+    *  There will be a standby namenode in case of namenode failure.
+    *  Pig and Hive are well prepared to handle Namenode failure.
+    *  It supports MS Windows.
+    
+    
+Explain the difference between MapReduce 1 and MapReduce 2 / Yarn ?
+
+ANS :
+    MapReduce 1:
+         It is a distributed data processing module.It is divided into two components.
+         MapReduce component is divided into two sub-components:
+         
+        *Job Tracker:
+                   Job Tracker is used to assign MapReduce Tasks to Task Trackers in the Cluster of Nodes. 
+                   Sometimes, it reassigns same tasks to other Task Trackers when previous Task Trackers fails.
+                   Job Tracker maintains the status of all Task Trackers.
+        
+        *Task Tracker:
+                   Task Tracker executes the Tasks which are assigned by Job Tracker and sends the status of those tasks to Job Tracker. 
+        
+        *Explanation:
+                   When Hadoop gets a Client Request,Master node receives it and separates it into different tasks and assigns them to Task Tracker.
+                   Slave Node’s MapReduce component “Task Tracker” receives tasks from “Job Tracker” and performs it using MapReduce component.
+                   Once all Task Trackers finished their job, Job Tracker takes those results and combines them into final result.
+                   The result is sent to the client.
+                   
+     MapReduce 2/YARN :
+         It is also comprised of Job Tracker and Task Tracker.
+          
+         *Job Tracker:
+                   It is divided into three;
+                      *Resource Manager-receives and runs applications on the cluster.
+                      *Job History Server-provides information about completed jobs
+                      *Application Master-manages each MapReduce job an terminates when the job completes.
+     
+         *Task Tracker :
+                   The TaskTracker has been replaced with the NodeManager, a YARN service that manages resources and deployment on a node. 
+                   NodeManager is responsible for launching containers that could either be a map or reduce task.
+                   This new architecture breaks JobTracker model by allowing a new ResourceManager to manage resource usage across applications, with ApplicationMasters taking 
+                  the responsibility of managing the execution of jobs. This change removes a bottleneck and  
+                  let Hadoop clusters scale up to larger configurations than 4000 nodes. 
+                  This architecture also allows simultaneous execution of a variety of programming models such as graph processing,
+                  iterative processing, machine learning, and general cluster computing, including the traditional MapReduce.
+        
